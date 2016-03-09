@@ -53,7 +53,10 @@
          });
    });
  }
-
+ app.post("/createJob",function(req,respond){
+   var devicesmode="INSERT INTO `SmartHouse`.`Secdualer` (`idUser`, `Job`, `DeviceStatus`) VALUES ('"+req.body.user+"', '"+req.body.job+"', '"+req.body.deviceStatus+"');"
+   handle_database(req,respond,devicesmode);
+ });
  app.post("/jobs",function(req,respond){
    var devicesmode="SELECT * FROM SmartHouse.Secdualer Where idUser="+req.body.user+" and done='false'";
    handle_database(req,respond,devicesmode);
@@ -71,10 +74,6 @@ app.post("/recieve",function(req,respond){
   var devicesmode="SELECT Device_Mode as dMode From SmartHouse.Devices WHERE idUsers="+req.body.user+" Order BY Device_Name Asc"
   handle_database(req,respond,devicesmode);
 });
- app.post("/updateuptime",function(req,ress){
-   var updateuseruptime="`SmartHouse`.`Users` SET `updater`='"+randomstring.generate()+"' WHERE `idUsers`="+req.body.user;
-   handle_database(req,ress,updateuseruptime);
- }
  app.post("/settemp",function(req,ress){
       var d = new Date();
       var n = d.getMonth();
@@ -90,6 +89,8 @@ app.post("/recieve",function(req,respond){
       }
       if(req.body.temp>0.0){
       var temp="INSERT INTO `SmartHouse`.`Temp` (`cTemp`, `idUsers`, `Season`) VALUES ("+req.body.temp+","+req.body.user+",'"+season+"')";
+      var updateuseruptime="UPDATE `SmartHouse`.`Users` SET `updater`='"+randomstring.generate()+"' WHERE `idUsers`="+req.body.user;
+      handle_database(req,ress,updateuseruptime);
 
       pool.query(temp,function(err,res){
       if(err) {
