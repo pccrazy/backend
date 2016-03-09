@@ -1,6 +1,7 @@
  var mysql      = require('mysql');
  var express    = require("express");
  var bodyParser = require('body-parser');
+ var randomstring = require("randomstring");
  var pushbots = require('pushbots');
  var Pushbots = new pushbots.api({
      id:'56daa80a177959ec588b4567',
@@ -27,7 +28,7 @@
     // get connection then release if error
      pool.getConnection(function(err,connection){
          if (err) {
-           connection.release();
+           //connection.release();
            res.json({"code" : 100, "status" : "Error in connection database"});
            return;
          }
@@ -86,6 +87,8 @@ app.post("/recieve",function(req,respond){
       }
       if(req.body.temp>0.0){
       var temp="INSERT INTO `SmartHouse`.`Temp` (`cTemp`, `idUsers`, `Season`) VALUES ("+req.body.temp+","+req.body.user+",'"+season+"')";
+      var updateuseruptime="`SmartHouse`.`Users` SET `updater`='"+randomstring.generate()+"' WHERE `idUsers`="+req.body.user;
+      handle_database(req,ress,updateuseruptime);
       pool.query(temp,function(err,res){
       if(err) {
             ress.send("Error with sentax please follow this example: INSERT INTO");

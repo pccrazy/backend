@@ -1,4 +1,5 @@
 var mysql      = require('mysql');
+var moment = require('moment')
 require('events').EventEmitter.defaultMaxListeners = Infinity;
 var pool      =    mysql.createPool({
   connectionLimit : 300, //important
@@ -9,6 +10,7 @@ var pool      =    mysql.createPool({
   debug    :  false,
   multipleStatements: true
 });
+
 
 var Users="SELECT idUsers,updatedAt FROM SmartHouse.Users";
 handle_database(Users);
@@ -26,14 +28,19 @@ function handle_database(Query) {
 
         // do the query then release connectoin
         connection.query(Query,function(err,rows){
-
+         connection.release();
             if(!err) {
                 for(var row in rows)
                 {
-
-                    console.log(rows[row].idUsers + " "+rows[row].updatedAt);
+                  var endDate = moment(new Date()).format("YYYY-MM-DD HH:mm");
+                  var startDate = moment(new Date(rows[row].updatedAt)).format("YYYY-MM-DD HH:mm");
+                  var diff = moment(endDate).diff(startDate, 'minute');
+                  if(diff>10){
+                    console.log(rows[row].idUsers+" is having a problem in his network ");
+                  }
+                  console.log(" "+startDate + " "+ endDate+" "+diff);
                 }
-                    connection.release();
+
             }else{
                 console.log({"code" : 102, "status" : "Error in user"});
             }
