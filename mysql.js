@@ -7,7 +7,7 @@
      id:'56daa80a177959ec588b4567',
      secret:'071f98d951458fd7064b4c5d5939a691'
  });
-require('events').EventEmitter.defaultMaxListeners = Infinity;
+//require('events').EventEmitter.defaultMaxListeners = Infinity;
  var app = express();
  app.use(bodyParser.json()); // support json encoded bodies
  app.use(bodyParser.urlencoded({ extended: true })); //support encoded bodies
@@ -71,7 +71,10 @@ app.post("/recieve",function(req,respond){
   var devicesmode="SELECT Device_Mode as dMode From SmartHouse.Devices WHERE idUsers="+req.body.user+" Order BY Device_Name Asc"
   handle_database(req,respond,devicesmode);
 });
-
+ app.post("/updateuptime",function(req,ress){
+   var updateuseruptime="`SmartHouse`.`Users` SET `updater`='"+randomstring.generate()+"' WHERE `idUsers`="+req.body.user;
+   handle_database(req,ress,updateuseruptime);
+ }
  app.post("/settemp",function(req,ress){
       var d = new Date();
       var n = d.getMonth();
@@ -87,8 +90,7 @@ app.post("/recieve",function(req,respond){
       }
       if(req.body.temp>0.0){
       var temp="INSERT INTO `SmartHouse`.`Temp` (`cTemp`, `idUsers`, `Season`) VALUES ("+req.body.temp+","+req.body.user+",'"+season+"')";
-      var updateuseruptime="`SmartHouse`.`Users` SET `updater`='"+randomstring.generate()+"' WHERE `idUsers`="+req.body.user;
-      handle_database(req,ress,updateuseruptime);
+
       pool.query(temp,function(err,res){
       if(err) {
             ress.send("Error with sentax please follow this example: INSERT INTO");
@@ -166,4 +168,4 @@ app.post("/recieve",function(req,respond){
  });
 
 
- app.listen('port', process.env.PORT || 3000);
+ app.listen(3000);
