@@ -23,3 +23,18 @@ exports.sendSms = function(number) {
       }
   });
 };
+exports.getseason=function(){
+  var d = new Date();
+  var n = d.getMonth();
+  var season;
+  if(n==1||n==2||n==3){
+    season="winter"
+  }else if(n==4||n==5||n==6){
+      season="spring"
+  }else if (n==7||n==8||n==9) {
+      season="summer"
+  }else if (n==7||n==8||n==9) {
+      season="autumn"
+  }
+  return season;
+}

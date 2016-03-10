@@ -1,8 +1,19 @@
+// monitors http request
+var pmx = require('pmx').init({
+  http          : true, // HTTP routes logging (default: true)
+  ignore_routes : [/socket\.io/, /notFound/], // Ignore http routes with this p$
+  errors        : true, // Exceptions loggin (default: true)
+  custom_probes : true, // Auto expose JS Loop Latency and HTTP req/s as custom$
+  network       : true, // Network monitoring at the application level
+  ports         : true  // Shows which ports your app is listening on (default:$
+});
+
+
  var mysql      = require('mysql');
  var express    = require("express");
  var bodyParser = require('body-parser');
  var randomstring = require("randomstring");
- var sms=require("./Tools")
+ var tools=require("./Tools")
  var pushbots = require('pushbots');
  var Pushbots = new pushbots.api({
      id:'56daa80a177959ec588b4567',
@@ -22,7 +33,6 @@
    debug    :  false,
    multipleStatements: true
  });
-
 
  function handle_database(req,res,Query) {
 
@@ -91,28 +101,15 @@
    handle_database(req,respond,devicesmode);
  });
 
-app.post("/recieve",function(req,respond){
+ app.post("/recieve",function(req,respond){
   var devicesmode="SELECT Device_Mode as dMode From SmartHouse.Devices WHERE idUsers="+req.body.user+" Order BY Device_Name Asc"
   handle_database(req,respond,devicesmode);
-});
+ });
  app.post("/settemp",function(req,ress){
-      var d = new Date();
-      var n = d.getMonth();
-      var season;
-      if(n==1||n==2||n==3){
-        season="winter"
-      }else if(n==4||n==5||n==6){
-          season="spring"
-      }else if (n==7||n==8||n==9) {
-          season="summer"
-      }else if (n==7||n==8||n==9) {
-          season="autumn"
-      }
       if(req.body.temp>0.0){
-      var temp="INSERT INTO `SmartHouse`.`Temp` (`cTemp`, `idUsers`, `Season`) VALUES ("+req.body.temp+","+req.body.user+",'"+season+"')";
+      var temp="INSERT INTO `SmartHouse`.`Temp` (`cTemp`, `idUsers`, `Season`) VALUES ("+req.body.temp+","+req.body.user+",'"+tools.getseason()+"')";
       var updateuseruptime="UPDATE `SmartHouse`.`Users` SET `updater`='"+randomstring.generate()+"' WHERE `idUsers`="+req.body.user;
       handle_database(req,ress,updateuseruptime);
-
       pool.query(temp,function(err,res){
       if(err) {
             ress.send("Error with sentax please follow this example: INSERT INTO");
@@ -123,28 +120,13 @@ app.post("/recieve",function(req,respond){
              }
       });
     }
-
-      // var temp="INSERT INTO `SmartHouse`.`Temp` (`cTemp`, `idUsers`) VALUES ('23', '1')";
-      //    handle_database(req,res);
  });
 
  app.post("/bootup",function(req,res){
-   var d = new Date();
-   var n = d.getMonth();
-   var season;
-   if(n==1||n==2||n==3){
-     season="winter"
-   }else if(n==4||n==5||n==6){
-       season="spring"
-   }else if (n==7||n==8||n==9) {
-       season="summer"
-   }else if (n==7||n==8||n==9) {
-       season="autumn"
-   }
    var currentTemp="SELECT cTemp as Temp FROM Temp JOIN Users USING(idUsers) where idUsers="+req.body.user+" and dayofyear(now()) = dayofyear(tDate) and month(now()) = month(tDate) and Year(now()) = year(tDate) ORDER BY tDate DESC limit 1";
    var avgDailyTemp="SELECT ROUND((AVG(cTemp)),2)  AS AVGD FROM Temp JOIN Users USING(idUsers) where idUsers="+req.body.user+" and dayofyear(now()) = dayofyear(tDate) and month(now()) = month(tDate) ORDER BY tDate DESC";
    var avargemonthly="SELECT ROUND((AVG(cTemp)),2)  AS AVGM FROM Temp JOIN Users USING(idUsers) where idUsers="+req.body.user+" and year(now()) = year(tDate) and month(now()) = month(tDate) ORDER BY tDate DESC";
-   var avgSeason="SELECT ROUND((AVG(cTemp)),2)  AS AVGS FROM Temp JOIN Users USING(idUsers) where idUsers="+req.body.user+" and  year(now()) = year(tDate) and Season='"+season+"'";
+   var avgSeason="SELECT ROUND((AVG(cTemp)),2)  AS AVGS FROM Temp JOIN Users USING(idUsers) where idUsers="+req.body.user+" and  year(now()) = year(tDate) and Season='"+tools.getseason()+"'";
    var devicesmode="SELECT Device_Mode as dMode From SmartHouse.Devices WHERE idUsers="+req.body.user+" Order BY Device_Name Asc";
    pool.query(currentTemp+";"+avgDailyTemp+";"+avargemonthly+";"+avgSeason+";"+devicesmode, function(err, results) {
      if (err) {console.log("somthing went wrong")};
@@ -164,6 +146,8 @@ app.post("/recieve",function(req,respond){
  //        res.send(response);
  //    });
  // });
+
+
   app.post("/sendSms",function(req,res){
      var getnumber="SELECT praimary_pn,seconedry_pn FROM SmartHouse.Users where idUsers=1";
       pool.query(getnumber,function(err,rows){
@@ -180,7 +164,7 @@ app.post("/recieve",function(req,respond){
      //
 
   });
- app.post("/changeDeviceMode",function(req,ress){
+  app.post("/changeDeviceMode",function(req,ress){
 
       var query="UPDATE SmartHouse.Devices SET Device_Mode="+req.body.DM+" WHERE idUsers="+req.body.user+" and Device_Name='"+req.body.DN+"'";
       pool.query(query,function(err,res){

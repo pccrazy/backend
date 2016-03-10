@@ -1,5 +1,5 @@
-// var greetings = require("./Tools.js");
-// console.log(greetings.sayHelloInEnglish("+96896388618"));
+var greetings = require("./Tools.js");
+ console.log(greetings.getseason());
 // var httpRequest = require('http_request');
 // httpRequest.post('https://MAZTBIODRHZDLMNTVKMJ:MGFlZDc0NzY0ZjlkMzQzMTZkY2M4YjYwZGE4OWI1@api.plivo.com/v1/Account/MAZTBIODRHZDLMNTVKMJ/Message/', {
 //   headers: {
