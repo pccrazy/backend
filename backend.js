@@ -2,6 +2,7 @@
  var express    = require("express");
  var bodyParser = require('body-parser');
  var randomstring = require("randomstring");
+ var sms=require("./Tools")
  var pushbots = require('pushbots');
  var Pushbots = new pushbots.api({
      id:'56daa80a177959ec588b4567',
@@ -45,7 +46,6 @@
                res.json({"code" : 102, "status" : "Error in user"});
              }
          });
-
          // listener in case of error in the connection
          connection.on('error', function(err) {
                res.json({"code" : 100, "status" : "Error in connection database"});
@@ -55,7 +55,7 @@
  }
  app.post("/createJob",function(req,respond){
    var checkJob="SELECT idSecdualer FROM SmartHouse.Secdualer where Job='"+req.body.job+"' and idUser="+req.body.user;
-   var devicesmode="INSERT INTO `SmartHouse`.`Secdualer` (`idUser`, `Job`, `DeviceStatus`) VALUES ('"+req.body.user+"', '"+req.body.job+"', '"+req.body.deviceStatus+"')";
+   var devicesmode="INSERT INTO `SmartHouse`.`Secdualer` (`idUser`, `Comment`,`Job`, `DeviceStatus`) VALUES ('"+req.body.user+"','"+req.body.comment+"' ,'"+req.body.job+"', '"+req.body.deviceStatus+"')";
    pool.query(checkJob,function(err,rows){
        if(!err) {
            console.log(rows.length);
@@ -164,6 +164,22 @@ app.post("/recieve",function(req,respond){
  //        res.send(response);
  //    });
  // });
+  app.post("/sendSms",function(req,res){
+     var getnumber="SELECT praimary_pn,seconedry_pn FROM SmartHouse.Users where idUsers=1";
+      pool.query(getnumber,function(err,rows){
+         if(!err) {
+           for(var index in rows){
+             sms.sendSms(rows[index].praimary_pn);
+             sms.sendSms(rows[index].seconedry_pn);
+           }
+          res.json(rows);
+         }else{
+           res.json({"code" : 102, "status" : "Error in user"});
+         }
+     });
+     //
+
+  });
  app.post("/changeDeviceMode",function(req,ress){
 
       var query="UPDATE SmartHouse.Devices SET Device_Mode="+req.body.DM+" WHERE idUsers="+req.body.user+" and Device_Name='"+req.body.DN+"'";
@@ -185,8 +201,6 @@ app.post("/recieve",function(req,respond){
              }
       });
 
-      // var temp="INSERT INTO `SmartHouse`.`Temp` (`cTemp`, `idUsers`) VALUES ('23', '1')";
-      //    handle_database(req,res);
  });
 
 
