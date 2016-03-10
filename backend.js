@@ -55,10 +55,10 @@
  }
  app.post("/createJob",function(req,respond){
 
-   var checkJon="SELECT idSecdualer FROM SmartHouse.Secdualer where Job='"+req.body.job+"' and idUser="+req.body.user;
+   var checkJob="SELECT idSecdualer FROM SmartHouse.Secdualer where Job='"+req.body.job+"' and idUser="+req.body.user;
    var devicesmode="INSERT INTO `SmartHouse`.`Secdualer` (`idUser`, `Job`, `DeviceStatus`) VALUES ('"+req.body.user+"', '"+req.body.job+"', '"+req.body.deviceStatus+"')";
 
-   pool.query(Query,function(err,rows){
+   pool.query(checkJob,function(err,rows){
        connection.release();
        if(!err) {
            console.log(rows.length);
