@@ -54,16 +54,32 @@
    });
  }
  app.post("/createJob",function(req,respond){
+
+   var checkJon="SELECT idSecdualer FROM SmartHouse.Secdualer where Job='"+req.body.job+"' and idUser="+req.body.user;
    var devicesmode="INSERT INTO `SmartHouse`.`Secdualer` (`idUser`, `Job`, `DeviceStatus`) VALUES ('"+req.body.user+"', '"+req.body.job+"', '"+req.body.deviceStatus+"')";
-   pool.query(devicesmode,function(err,res){
-   if(err) {
-         respond.send("Error");
-          console.log("Error"+err);
-         }else{
-              respond.send("Last insert ID: " +res.insertId);
-              console.log('Last insert ID:', res.insertId);
-          }
+
+   pool.query(Query,function(err,rows){
+       connection.release();
+       if(!err) {
+           console.log(rows.length);
+           if(rows.length==0){
+             pool.query(devicesmode,function(err,res){
+             if(err) {
+                   respond.send("Error");
+                    console.log("Error"+err);
+                   }else{
+                        respond.send("Last insert ID: " +res.insertId);
+                        console.log('Last insert ID:', res.insertId);
+                    }
+             });
+           }else{
+                 respond.send("You already have a job at that time");
+           }
+       }else{
+         res.json({"code" : 102, "status" : "Error in user"});
+       }
    });
+
  });
  app.post("/jobs",function(req,respond){
    var devicesmode="SELECT * FROM SmartHouse.Secdualer Where idUser="+req.body.user+" and done='false'";
