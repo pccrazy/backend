@@ -57,10 +57,10 @@
    var devicesmode="INSERT INTO `SmartHouse`.`Secdualer` (`idUser`, `Job`, `DeviceStatus`) VALUES ('"+req.body.user+"', '"+req.body.job+"', '"+req.body.deviceStatus+"')";
    pool.query(devicesmode,function(err,res){
    if(err) {
-         ress.send("Error");
+         respond.send("Error");
           console.log("Error"+err);
          }else{
-              ress.send("Last insert ID: " +res.insertId);
+              respond.send("Last insert ID: " +res.insertId);
               console.log('Last insert ID:', res.insertId);
           }
    });
