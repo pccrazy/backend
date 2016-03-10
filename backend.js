@@ -54,7 +54,6 @@
    });
  }
  app.post("/createJob",function(req,respond){
-
    var checkJob="SELECT idSecdualer FROM SmartHouse.Secdualer where Job='"+req.body.job+"' and idUser="+req.body.user;
    var devicesmode="INSERT INTO `SmartHouse`.`Secdualer` (`idUser`, `Job`, `DeviceStatus`) VALUES ('"+req.body.user+"', '"+req.body.job+"', '"+req.body.deviceStatus+"')";
    pool.query(checkJob,function(err,rows){
@@ -63,15 +62,15 @@
            if(rows.length==0){
              pool.query(devicesmode,function(err,res){
              if(err) {
-                   respond.send("Error");
+                   respond.send("Somthing Went Wrong");
                     console.log("Error"+err);
                    }else{
-                        respond.send("Last insert ID: " +res.insertId);
+                        respond.send("Job is successfully created");
                         console.log('Last insert ID:', res.insertId);
                     }
              });
            }else{
-                 respond.send("You already have a job at that time");
+                 respond.send("You already have a job at that Time and Date");
            }
        }else{
          res.json({"code" : 102, "status" : "Error in user"});
