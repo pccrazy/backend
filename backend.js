@@ -147,7 +147,7 @@ var pmx = require('pmx').init({
  //    });
  // });
 
- app.post("/sendEmai;",function(req,res){
+ app.post("/sendEmail",function(req,res){
 
   tools.sendEmail(req.body.user,res);
     //
