@@ -7,22 +7,21 @@ var pmx = require('pmx').init({
   network       : true, // Network monitoring at the application level
   ports         : true  // Shows which ports your app is listening on (default:$
 });
-
-
- var mysql      = require('mysql');
- var express    = require("express");
- var bodyParser = require('body-parser');
- var randomstring = require("randomstring");
- var tools=require("./Tools")
- var pushbots = require('pushbots');
- var Pushbots = new pushbots.api({
+var mysql      = require('mysql');
+var express    = require("express");
+var bodyParser = require('body-parser');
+var randomstring = require("randomstring");
+var app = express();
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true }));
+var tools=require("./Tools")
+var pushbots = require('pushbots');
+var Pushbots = new pushbots.api({
      id:'56daa80a177959ec588b4567',
      secret:'071f98d951458fd7064b4c5d5939a691'
  });
 //require('events').EventEmitter.defaultMaxListeners = Infinity;
- var app = express();
- app.use(bodyParser.json()); // support json encoded bodies
- app.use(bodyParser.urlencoded({ extended: true })); //support encoded bodies
+//support encoded bodies
 
  var pool      =    mysql.createPool({
    connectionLimit : 300, //important
@@ -62,7 +61,7 @@ var pmx = require('pmx').init({
                return;
          });
    });
- }
+ };
  app.post("/createJob",function(req,respond){
    var checkJob="SELECT idSecdualer FROM SmartHouse.Secdualer where Job='"+req.body.job+"' and idUser="+req.body.user;
    var devicesmode="INSERT INTO `SmartHouse`.`Secdualer` (`idUser`, `Comment`,`Job`, `DeviceStatus`) VALUES ('"+req.body.user+"','"+req.body.comment+"' ,'"+req.body.job+"', '"+req.body.deviceStatus+"')";
@@ -138,20 +137,8 @@ var pmx = require('pmx').init({
 
  });
 
- // app.get("/push",function(req,res){
- //   Pushbots.setMessage("Be Aware Smoke is detected" ,1);
- //  //  Pushbots.sendByTags("2");
- //   Pushbots.customNotificationTitle("Fire Alert");
- //   Pushbots.push(function(response){
- //        res.send(response);
- //    });
- // });
-
- app.post("/sendEmail",function(req,res){
-
-  tools.sendEmail(req.body.user,res);
-    //
-
+ app.post("/sendEmail",function(req,respond){
+     tools.sendEmail(req,respond)
  });
 
   app.post("/sendSms",function(req,res){
@@ -159,8 +146,8 @@ var pmx = require('pmx').init({
       pool.query(getnumber,function(err,rows){
          if(!err) {
            for(var index in rows){
-             sms.sendSms(rows[index].praimary_pn);
-             sms.sendSms(rows[index].seconedry_pn);
+             tools.sendSms(rows[index].praimary_pn);
+             tools.sendSms(rows[index].seconedry_pn);
            }
           res.json(rows);
          }else{

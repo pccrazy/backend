@@ -5,14 +5,15 @@ var apiKey = 'AIzaSyDbJS1RT-WDOUsZqfP02k97g1nwuwVML0E';
 var gcm = new GCM(apiKey);
 
 exports.sendEmail=function(email,res){
+  console.log(email);
   var api_key = 'key-c8f8793557c5af804326747e4ba86ad7';
   var domain = 'sandboxcb76aaa8d6f7404f94ef3055c52f854a.mailgun.org';
   var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
   var data = {
     from: 'mailgun@sandboxcb76aaa8d6f7404f94ef3055c52f854a.mailgun.org',
-    to:email,
+    to:req.body.email,
     subject: 'Fire Alert',
-    text: 'Be Alert You House on Fire'
+    text: 'Hurry the building on fire '+req.body.temp;
   };
 
   mailgun.messages().send(data, function (error, body) {
