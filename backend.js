@@ -138,7 +138,7 @@ var Pushbots = new pushbots.api({
  });
 
  app.post("/sendEmail",function(req,respond){
-     tools.sendEmail(req,respond)
+     tools.sendEmail(req,respond);
  });
 
   app.post("/sendSms",function(req,res){

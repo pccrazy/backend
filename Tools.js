@@ -4,7 +4,7 @@ var GCM = require('gcm').GCM;
 var apiKey = 'AIzaSyDbJS1RT-WDOUsZqfP02k97g1nwuwVML0E';
 var gcm = new GCM(apiKey);
 
-exports.sendEmail=function(email,res){
+exports.sendEmail=function(req,res){
   console.log(email);
   var api_key = 'key-c8f8793557c5af804326747e4ba86ad7';
   var domain = 'sandboxcb76aaa8d6f7404f94ef3055c52f854a.mailgun.org';
@@ -13,7 +13,7 @@ exports.sendEmail=function(email,res){
     from: 'mailgun@sandboxcb76aaa8d6f7404f94ef3055c52f854a.mailgun.org',
     to:req.body.email,
     subject: 'Fire Alert',
-    text: 'Hurry the building on fire '+req.body.temp;
+    text: 'Hurry the building on fire '+req.body.temp
   };
 
   mailgun.messages().send(data, function (error, body) {
