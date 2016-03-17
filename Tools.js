@@ -1,6 +1,41 @@
 var exports = module.exports = {};
 var httpRequest = require('http_request');
+var GCM = require('gcm').GCM;
+var apiKey = 'AIzaSyDbJS1RT-WDOUsZqfP02k97g1nwuwVML0E';
+var gcm = new GCM(apiKey);
 
+exports.sendEmail=function(email,res){
+  var api_key = 'key-c8f8793557c5af804326747e4ba86ad7';
+  var domain = 'sandboxcb76aaa8d6f7404f94ef3055c52f854a.mailgun.org';
+  var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+  var data = {
+    from: 'mailgun@sandboxcb76aaa8d6f7404f94ef3055c52f854a.mailgun.org',
+    to:email,
+    subject: 'Fire Alert',
+    text: 'Be Alert You House on Fire'
+  };
+
+  mailgun.messages().send(data, function (error, body) {
+    console.log(body);
+    res.send(body);
+  });
+}
+
+
+exports.pushNotification=function(id){
+  var message = {
+      registration_id: 'APA91bEdmr_4McucZQh_FNa5Dqbmq1qlC9gBvRJHrbr6bhq2T6Y6P9zL25jPUxTxgKG3Wajr6HJfOBoPUeBE2IJB7byGUqAMKS-gxpU98YkvHZ6MtEcXCd-MgJjLjPctOfEkTuQLJQ-v', // required
+      'data.title': 'Alert Fire At Home',
+  };
+  gcm.send(message, function(err, messageId){
+      if (err) {
+          console.log("Something has gone wrong!");
+      } else {
+          console.log("Sent with message ID: ", messageId);
+      }
+  });
+
+}
 exports.sendSms = function(number) {
   var client = require('twilio')('ACeb686f315944592c283ea4c9945c7180', '2e802e75e0c419ebbcf3f5f9226d9bfb');
 

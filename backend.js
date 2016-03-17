@@ -147,6 +147,12 @@ var pmx = require('pmx').init({
  //    });
  // });
 
+ app.post("/sendEmai;",function(req,res){
+
+  tools.sendEmail(req.body.user,res);
+    //
+
+ });
 
   app.post("/sendSms",function(req,res){
      var getnumber="SELECT praimary_pn,seconedry_pn FROM SmartHouse.Users where idUsers=1";
