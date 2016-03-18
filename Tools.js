@@ -3,17 +3,19 @@ var httpRequest = require('http_request');
 var GCM = require('gcm').GCM;
 var apiKey = 'AIzaSyDbJS1RT-WDOUsZqfP02k97g1nwuwVML0E';
 var gcm = new GCM(apiKey);
+var request = require('request');
 
 
-exports.sendtoRas=function(pinn,modee){
+  exports.sendtoRas=function(pinn,modee){
 
-  request.post({url:'http://10.8.0.6/gpio', form: {pin:pinn,mode:modee}},
-  function(err,httpResponse,body)
-    {
-      console.log(body);
-    });
-  
-  }
+    request.post({url:'http://10.8.0.6:4000/gpio', form: {pin:pinn,mode:modee}},
+    function(err,httpResponse,body)
+      {
+        console.log(body);
+      });
+
+    }
+
 
 exports.sendEmail=function(req,res){
   console.log(email);
