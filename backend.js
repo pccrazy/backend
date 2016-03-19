@@ -8,6 +8,7 @@ var pmx = require('pmx').init({
   ports         : true  // Shows which ports your app is listening on (default:$
 });
 var request = require('request');
+request({timeout: 20});
 var mysql      = require('mysql');
 var express    = require("express");
 var bodyParser = require('body-parser');
