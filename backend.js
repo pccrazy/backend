@@ -8,7 +8,6 @@ var pmx = require('pmx').init({
   ports         : true  // Shows which ports your app is listening on (default:$
 });
 var request = require('request');
-request({timeout: 20});
 var mysql      = require('mysql');
 var express    = require("express");
 var bodyParser = require('body-parser');
@@ -66,7 +65,7 @@ var tools=require("./Tools")
        if(!err) {
          console.log(rows.length);
          if(rows.length==0){
-           request.post({url:'http://10.8.0.6:4000/job', form: {job:req.body.job,dstatus:req.body.deviceStatus}},
+           request.post({url:'http://10.8.0.6:4000/job',timeout:20, form: {job:req.body.job,dstatus:req.body.deviceStatus}},
            function(err,httpResponse,body)
              {
                console.log(err);
