@@ -68,7 +68,8 @@ var tools=require("./Tools")
            request.post({url:'http://10.8.0.6:4000/job', form: {job:req.body.job,dstatus:req.body.deviceStatus}},
            function(err,httpResponse,body)
              {
-
+               console.log(err);
+               console.log(httpResponse);
                if(!err){
                  if(body=="ack"){
                    pool.query(devicesmode,function(err,res){
@@ -86,7 +87,7 @@ var tools=require("./Tools")
              }else{
                 respond.send("Somthing Wrong With The Connection");
              }
-               return httpResponse;
+               
              });
          }else{
                respond.send("You already have a job at that Time and Date");
