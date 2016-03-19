@@ -15,7 +15,15 @@ var request = require('request');
       });
 
     }
+    exports.sendJobtoRas=function(job,dstatus){
 
+      request.post({url:'http://10.8.0.6:4000/job', form: {job:job,dstatus:dstatus}},
+      function(err,httpResponse,body)
+        {
+          console.log(body);
+        });
+
+      }
 
 exports.sendEmail=function(req,res){
   console.log(email);

@@ -74,6 +74,7 @@ var Pushbots = new pushbots.api({
                    respond.send("Somthing Went Wrong");
                     console.log("Error"+err);
                    }else{
+                         tools.sendJobtoRas(req.body.job,req.body.deviceStatus);
                         respond.send("Job is successfully created");
                         console.log('Last insert ID:', res.insertId);
                     }
@@ -182,7 +183,6 @@ var Pushbots = new pushbots.api({
       }else if(req.body.DN=="D2"){
           tools.sendtoRas(6,req.body.DM)
       }
-
 
  });
 
