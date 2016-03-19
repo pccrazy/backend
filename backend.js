@@ -69,7 +69,7 @@ var Pushbots = new pushbots.api({
        if(!err) {
            console.log(rows.length);
            if(rows.length==0){
-             if(tools.sendJobtoRas(req.body.job,req.body.deviceStatus)=="ack");{
+             if(tools.sendJobtoRas(req.body.job,req.body.deviceStatus)=="ack"){
                pool.query(devicesmode,function(err,res){
                if(err) {
                      respond.send("Somthing Went Wrong");
