@@ -67,25 +67,25 @@ var Pushbots = new pushbots.api({
    var devicesmode="INSERT INTO `SmartHouse`.`Secdualer` (`idUser`, `Comment`,`Job`, `DeviceStatus`) VALUES ('"+req.body.user+"','"+req.body.comment+"' ,'"+req.body.job+"', '"+req.body.deviceStatus+"')";
    pool.query(checkJob,function(err,rows){
        if(!err) {
-           console.log(rows.length);
-           if(rows.length==0){
-             if(tools.sendJobtoRas(req.body.job,req.body.deviceStatus)=="ack"){
-               pool.query(devicesmode,function(err,res){
-               if(err) {
-                     respond.send("Somthing Went Wrong");
-                      console.log("Error"+err);
-                     }else{
+         console.log(rows.length);
+         if(rows.length==0){
+           if(tools.sendJobtoRas(req.body.job,req.body.deviceStatus)=="ack"){
+             pool.query(devicesmode,function(err,res){
+             if(err) {
+                   respond.send("Somthing Went Wrong");
+                    console.log("Error"+err);
+                   }else{
 
-                          respond.send("Job is successfully created");
-                          console.log('Last insert ID:', res.insertId);
-                      }
-               });
-             }else{
-               respond.send("Somthing Went Wrong Try Again");
-             }
+                        respond.send("Job is successfully created");
+                        console.log('Last insert ID:', res.insertId);
+                    }
+             });
            }else{
-                 respond.send("You already have a job at that Time and Date");
+               respond.send("Connection error with system");
            }
+         }else{
+               respond.send("You already have a job at that Time and Date");
+         }
        }else{
          res.json({"code" : 102, "status" : "Error in user"});
        }

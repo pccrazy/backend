@@ -11,7 +11,7 @@ var request = require('request');
     request.post({url:'http://10.8.0.6:4000/gpio', form: {pin:pinn,mode:modee}},
     function(err,httpResponse,body)
       {
-        console.log(body);
+            return httpResponse;
       });
 
     }
@@ -20,7 +20,7 @@ var request = require('request');
       request.post({url:'http://10.8.0.6:4000/job', form: {job:job,dstatus:dstatus}},
       function(err,httpResponse,body)
         {
-          console.log(body);
+          return httpResponse;
         });
 
       }
