@@ -70,7 +70,7 @@ var tools=require("./Tools")
              {
                console.log(err);
                console.log(httpResponse);
-               if(!err){
+               if(!err&& httpResponse.statusCode == 200){
                  if(body=="ack"){
                    pool.query(devicesmode,function(err,res){
                    if(err) {
@@ -85,9 +85,10 @@ var tools=require("./Tools")
                  }
 
              }else{
+                  console.log("Somthing Wrong With The Connection");
                 respond.send("Somthing Wrong With The Connection");
              }
-               
+
              });
          }else{
                respond.send("You already have a job at that Time and Date");
