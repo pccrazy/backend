@@ -65,7 +65,7 @@ var tools=require("./Tools")
        if(!err) {
          console.log(rows.length);
          if(rows.length==0){
-           request.post({url:'http://10.8.0.6:4000/job', form: {job:job,dstatus:dstatus}},
+           request.post({url:'http://10.8.0.6:4000/job', form: {job:req.body.job,dstatus:req.body.deviceStatus}},
            function(err,httpResponse,body)
              {
                console.log(httpResponse);
