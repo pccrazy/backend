@@ -58,6 +58,9 @@ var tools=require("./Tools")
    });
  };
 
+  app.post("/push"){
+
+  }
  app.post("/createJob",function(req,respond){
   var checkJob="SELECT idSecdualer FROM SmartHouse.Secdualer where Job='"+req.body.job+"' and idUser="+req.body.user;
    var devicesmode="INSERT INTO `SmartHouse`.`Secdualer` (`idUser`, `Comment`,`Job`, `DeviceStatus`) VALUES ('"+req.body.user+"','"+req.body.comment+"' ,'"+req.body.job+"', '"+req.body.deviceStatus+"')";
@@ -143,6 +146,14 @@ var tools=require("./Tools")
   var devicesmode="SELECT Device_Mode as dMode From SmartHouse.Devices WHERE idUsers="+req.body.user+" Order BY Device_Name Asc"
   handle_database(req,respond,devicesmode);
  });
+
+ app.post("/token",function(req,respond){
+  var devicesmode="UPDATE `SmartHouse`.`Users` SET GCM="+req.body.token+"WHERE idUsers="+req.body.user;
+  handle_database(req,respond,devicesmode);
+ });
+
+
+
  app.post("/settemp",function(req,ress){
       if(req.body.temp>0.0){
       var temp="INSERT INTO `SmartHouse`.`Temp` (`cTemp`, `idUsers`, `Season`) VALUES ("+req.body.temp+","+req.body.user+",'"+tools.getseason()+"')";
