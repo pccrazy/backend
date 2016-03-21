@@ -34,7 +34,7 @@ exports.sendEmail=function(email){
     from: 'mailgun@sandboxcb76aaa8d6f7404f94ef3055c52f854a.mailgun.org',
     to:email,
     subject: 'Fire Alert',
-    text: 'Hurry the building on fire '+req.body.temp
+    text: 'Be Aware The System Detected Fire'
   };
 
   mailgun.messages().send(data, function (error, body) {
