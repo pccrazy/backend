@@ -1,7 +1,7 @@
 var exports = module.exports = {};
 var httpRequest = require('http_request');
 var GCM = require('gcm').GCM;
-var apiKey = 'AIzaSyDbJS1RT-WDOUsZqfP02k97g1nwuwVML0E';
+var apiKey = 'AIzaSyAxfr7P31ifgomS5uMhNsJcAvFdOUu9-RI';
 var gcm = new GCM(apiKey);
 var request = require('request');
 
@@ -45,12 +45,12 @@ exports.sendEmail=function(email){
 
 exports.pushNotification=function(id){
   var message = {
-      registration_id: id, // required
+      registration_id: 'eGVJn4rQPZU:APA91bH37pIKEsz265WY1KwetpbKiXnShRY-5lYATpTlN4ZXvRDFgWijEaU8iNoUCe8BU2wslrNd2zNuG0S5VS4XRR9oDfzva5IW-GULY0U7zuoT87tDdCPKEWfPJSf8SAFRQmi-fdLZ', // required
       'data.title': 'Alert Fire At Home',
   };
   gcm.send(message, function(err, messageId){
       if (err) {
-          console.log("Something has gone wrong!");
+          console.log("Something has gone wrong!"+err);
       } else {
           console.log("Sent with message ID: ", messageId);
       }
