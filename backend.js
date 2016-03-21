@@ -182,7 +182,7 @@ var tools=require("./Tools")
 
   });
   app.post("/alert",function(req,res){
-     var alert="SELECT FROM SmartHouse.Users where idUsers="+req.body.user;
+     var alert="SELECT * FROM SmartHouse.Users where idUsers="+req.body.user;
       pool.query(alert,function(err,rows){
          if(!err) {
            for(var index in rows){
