@@ -1,7 +1,7 @@
 var exports = module.exports = {};
 var httpRequest = require('http_request');
 var GCM = require('gcm').GCM;
-var apiKey = 'AIzaSyAsiIF28h2ZONBE7hdsrjekkhICn3x49yY';
+var apiKey = 'AIzaSyAxfr7P31ifgomS5uMhNsJcAvFdOUu9-RI';
 var gcm = new GCM(apiKey);
 var request = require('request');
 
@@ -50,9 +50,9 @@ exports.pushNotification=function(id){
   };
   gcm.send(message, function(err, messageId){
       if (err) {
-          console.log("Something has gone wrong!"+err);
+          console.log("Something has gone wrong! "+err);
       } else {
-          console.log("Sent with message ID: ", messageId);
+          console.log("Sent with message ID : ", messageId);
       }
   });
 
