@@ -181,6 +181,22 @@ var tools=require("./Tools")
      //
 
   });
+  app.post("/alert",function(req,res){
+     var alert="SELECT FROM SmartHouse.Users where idUsers="+req.body.user;
+      pool.query(alert,function(err,rows){
+         if(!err) {
+           for(var index in rows){
+             tools.sendSms(rows[index].praimary_pn);
+             tools.sendSms(rows[index].seconedry_pn);
+             tools.pushNotification(rows[index].GCM);
+           }
+          res.json(rows);
+         }else{
+           res.json({"code" : 102, "status" : "Error in user"});
+         }
+     });
+     //
+  });
   app.post("/changeDeviceMode",function(req,ress){
 
       var query="UPDATE SmartHouse.Devices SET Device_Mode="+req.body.DM+" WHERE idUsers="+req.body.user+" and Device_Name='"+req.body.DN+"'";
