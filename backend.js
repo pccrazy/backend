@@ -58,9 +58,6 @@ var tools=require("./Tools")
    });
  };
 
-  app.post("/push"){
-
-  }
  app.post("/createJob",function(req,respond){
   var checkJob="SELECT idSecdualer FROM SmartHouse.Secdualer where Job='"+req.body.job+"' and idUser="+req.body.user;
    var devicesmode="INSERT INTO `SmartHouse`.`Secdualer` (`idUser`, `Comment`,`Job`, `DeviceStatus`) VALUES ('"+req.body.user+"','"+req.body.comment+"' ,'"+req.body.job+"', '"+req.body.deviceStatus+"')";
@@ -95,31 +92,7 @@ var tools=require("./Tools")
       respond.send("Somthing Wrong With The Connection");
    }
   });
-          //  request.post({url:'http://10.8.0.6:4000/job',timeout:70, form: {job:req.body.job,dstatus:req.body.deviceStatus}},
-          //  function(err,httpResponse,body)
-          //    {
-          //      console.log(err);
-          //      console.log(httpResponse);
-          //      if(!err&& httpResponse.statusCode == 200){
-          //        if(body=="ack"){
-          //          pool.query(devicesmode,function(err,res){
-          //          if(err) {
-          //                respond.send("Somthing Went Wrong");
-          //                 console.log("Error"+err);
-          //                }else{
-           //
-          //                     respond.send("Job is successfully created");
-          //                     console.log('Last insert ID:', res.insertId);
-          //                 }
-          //          });
-          //        }
-           //
-          //    }else{
-          //         console.log("Somthing Wrong With The Connection");
-          //       respond.send("Somthing Wrong With The Connection");
-          //    }
-           //
-          //    });
+
          }else{
                respond.send("You already have a job at that Time and Date");
          }

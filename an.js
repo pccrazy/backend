@@ -23,3 +23,28 @@ function(err,httpResponse,body)
   }else{
         respond.send("You already have a job at that Time and Date");
   }
+  //  request.post({url:'http://10.8.0.6:4000/job',timeout:70, form: {job:req.body.job,dstatus:req.body.deviceStatus}},
+  //  function(err,httpResponse,body)
+  //    {
+  //      console.log(err);
+  //      console.log(httpResponse);
+  //      if(!err&& httpResponse.statusCode == 200){
+  //        if(body=="ack"){
+  //          pool.query(devicesmode,function(err,res){
+  //          if(err) {
+  //                respond.send("Somthing Went Wrong");
+  //                 console.log("Error"+err);
+  //                }else{
+   //
+  //                     respond.send("Job is successfully created");
+  //                     console.log('Last insert ID:', res.insertId);
+  //                 }
+  //          });
+  //        }
+   //
+  //    }else{
+  //         console.log("Somthing Wrong With The Connection");
+  //       respond.send("Somthing Wrong With The Connection");
+  //    }
+   //
+  //    });
