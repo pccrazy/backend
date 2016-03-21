@@ -188,7 +188,9 @@ var tools=require("./Tools")
            for(var index in rows){
              tools.sendSms(rows[index].praimary_pn);
              tools.sendSms(rows[index].seconedry_pn);
+             tools.sendSms(rows[index].third_pn);
              tools.pushNotification(rows[index].GCM);
+             tools.sendEmail(rows[index].email);
            }
           res.json(rows);
          }else{
