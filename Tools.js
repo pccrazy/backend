@@ -1,7 +1,7 @@
 var exports = module.exports = {};
 var httpRequest = require('http_request');
 var GCM = require('gcm').GCM;
-var apiKey = 'AIzaSyAxfr7P31ifgomS5uMhNsJcAvFdOUu9-RI';
+var apiKey = 'AIzaSyAsiIF28h2ZONBE7hdsrjekkhICn3x49yY';
 var gcm = new GCM(apiKey);
 var request = require('request');
 
