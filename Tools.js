@@ -45,7 +45,7 @@ exports.sendEmail=function(email){
 
 exports.pushNotification=function(id){
   var message = {
-      registration_id: 'eGVJn4rQPZU:APA91bH37pIKEsz265WY1KwetpbKiXnShRY-5lYATpTlN4ZXvRDFgWijEaU8iNoUCe8BU2wslrNd2zNuG0S5VS4XRR9oDfzva5IW-GULY0U7zuoT87tDdCPKEWfPJSf8SAFRQmi-fdLZ', // required
+      registration_id: id, // required
       'data.title': 'Alert Fire At Home',
   };
   gcm.send(message, function(err, messageId){
