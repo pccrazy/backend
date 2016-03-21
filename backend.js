@@ -121,8 +121,8 @@ var tools=require("./Tools")
  });
 
  app.post("/token",function(req,respond){
-   console.log(req.body.token+" "+req.body.id);
-  var devicesmode="UPDATE `SmartHouse`.`Users` SET GCM="+req.body.token+"WHERE idUsers="+req.body.user;
+   console.log(req.body.token+" "+req.body.user);
+  var devicesmode="UPDATE `SmartHouse`.`Users` SET GCM='"+req.body.token+"' WHERE idUsers="+req.body.user;
   handle_database(req,respond,devicesmode);
  });
 
