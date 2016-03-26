@@ -207,7 +207,19 @@ app.post("/setremote",function(req,res) {
 
   });
   app.post("/pushstatus",function(req,res){
-      tools.pushDeviceStatus(req.body.user,req.body.msg);
+    var alert="SELECT * FROM SmartHouse.Users where idUsers="+req.body.user;
+    pool.query(alert,function(err,rows){
+       if(!err) {
+         for(var index in rows){
+             tools.pushDeviceStatus(rows[index].GCM,req.body.msg);
+
+         }
+        res.json(rows);
+       }else{
+         res.json({"code" : 102, "status" : "Error in user"});
+       }
+   });
+
      //
   });
   app.post("/alert",function(req,res){
