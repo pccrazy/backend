@@ -244,11 +244,9 @@ app.post("/setremote",function(req,res) {
 
              }
       });
-      if(req.body.DN=="D1"){
-          tools.sendtoRas(5,req.body.DM)
-      }else if(req.body.DN=="D2"){
-          tools.sendtoRas(6,req.body.DM)
-      }
+
+          tools.sendtoRas(req.body.DN,req.body.DM)
+
 
  });
 
