@@ -156,7 +156,7 @@ var tools=require("./Tools")
   // [{2: 2}]
   });
 });
-app.post("/setremote",function(req,ress) {
+app.post("/setremote",function(req,res) {
  var ipRemoteUpdater="UPDATE `SmartHouse`.`Users` SET vpnip='"+req.body.vpnip+"' WHERE idUsers="+req.body.user;
  pool.query(ipRemoteUpdater, function(err, results) {
    if (err) {console.log("somthing went wrong")};
