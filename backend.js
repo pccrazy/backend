@@ -112,8 +112,14 @@ var tools=require("./Tools")
    handle_database(req,respond,devicesmode);
  });
  app.post("/auth",function(req,respond){
-   var devicesmode="SELECT idUsers as ID FROM Users where userName='"+req.body.user+"' and Pass='"+req.body.pass+"' and QR='"+req.body.qr+"'";
-   handle_database(req,respond,devicesmode);
+   var auth="SELECT idUsers as ID FROM Users where userName='"+req.body.user+"' and Pass='"+req.body.pass+"' and QR='"+req.body.qr+"'";
+   pool.query(auth, function(err, results) {
+     if (err) {console.log("somthing went wrong")};
+     // `results` is an array with one element for every statement in the query:
+     respond.json(results);
+     console.log(results); // [{1: 1}]
+   // [{2: 2}]
+   });
  });
 
  app.post("/recieve",function(req,respond){
