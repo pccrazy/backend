@@ -131,7 +131,7 @@ var tools=require("./Tools")
   console.log(req.body.token+" "+req.body.user);
   var token="UPDATE `SmartHouse`.`Users` SET GCM='"+req.body.token+"' WHERE idUsers="+req.body.user;
   pool.query(token, function(err, results) {
-    if (err) {console.log("somthing went wrong in token")};
+    if (err) {console.log("somthing went wrong in token "+err)};
     // `results` is an array with one element for every statement in the query:
     respond.json("ack token");
     console.log(results); // [{1: 1}]
