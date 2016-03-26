@@ -128,6 +128,7 @@ var tools=require("./Tools")
 
 
 
+
  app.post("/settemp",function(req,ress){
       if(req.body.temp>0.0){
       var temp="INSERT INTO `SmartHouse`.`Temp` (`cTemp`, `idUsers`, `Season`) VALUES ("+req.body.temp+","+req.body.user+",'"+tools.getseason()+"')";
@@ -144,6 +145,27 @@ var tools=require("./Tools")
       });
     }
  });
+ // Check this
+ app.post("/setlocal",function(req,ress) {
+  var ipLocalUpdater="UPDATE `SmartHouse`.`Users` SET localip='"+req.body.localip+"' WHERE idUsers="+req.body.user;
+  pool.query(ipLocalUpdater, function(err, results) {
+    if (err) {console.log("somthing went wrong")};
+    // `results` is an array with one element for every statement in the query:
+    res.send("ack");
+    console.log(results); // [{1: 1}]
+  // [{2: 2}]
+  });
+});
+app.post("/setremote",function(req,ress) {
+ var ipRemoteUpdater="UPDATE `SmartHouse`.`Users` SET vpnip='"+req.body.vpnip+"' WHERE idUsers="+req.body.user;
+ pool.query(ipRemoteUpdater, function(err, results) {
+   if (err) {console.log("somthing went wrong")};
+   // `results` is an array with one element for every statement in the query:
+   res.send("ack");
+   console.log(results); // [{1: 1}]
+ // [{2: 2}]
+ });
+});
 
  app.post("/bootup",function(req,res){
    var currentTemp="SELECT cTemp as Temp FROM Temp JOIN Users USING(idUsers) where idUsers="+req.body.user+" and dayofyear(now()) = dayofyear(tDate) and month(now()) = month(tDate) and Year(now()) = year(tDate) ORDER BY tDate DESC limit 1";
@@ -151,7 +173,9 @@ var tools=require("./Tools")
    var avargemonthly="SELECT ROUND((AVG(cTemp)),2)  AS AVGM FROM Temp JOIN Users USING(idUsers) where idUsers="+req.body.user+" and year(now()) = year(tDate) and month(now()) = month(tDate) ORDER BY tDate DESC";
    var avgSeason="SELECT ROUND((AVG(cTemp)),2)  AS AVGS FROM Temp JOIN Users USING(idUsers) where idUsers="+req.body.user+" and  year(now()) = year(tDate) and Season='"+tools.getseason()+"'";
    var devicesmode="SELECT Device_Mode as dMode From SmartHouse.Devices WHERE idUsers="+req.body.user+" Order BY Device_Name Asc";
-   pool.query(currentTemp+";"+avgDailyTemp+";"+avargemonthly+";"+avgSeason+";"+devicesmode, function(err, results) {
+  // and this
+   var ipLocalUpdater="SELECT localip as local From SmartHouse.Users WHERE idUsers="+req.body.user;
+   pool.query(currentTemp+";"+avgDailyTemp+";"+avargemonthly+";"+avgSeason+";"+devicesmode+";"+ipLocalUpdater, function(err, results) {
      if (err) {console.log("somthing went wrong")};
      // `results` is an array with one element for every statement in the query:
      res.send(results);
