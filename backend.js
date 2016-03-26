@@ -146,7 +146,7 @@ var tools=require("./Tools")
     }
  });
  // Check this
- app.post("/setlocal",function(req,ress) {
+ app.post("/setlocal",function(req,res) {
   var ipLocalUpdater="UPDATE `SmartHouse`.`Users` SET localip='"+req.body.localip+"' WHERE idUsers="+req.body.user;
   pool.query(ipLocalUpdater, function(err, results) {
     if (err) {console.log("somthing went wrong")};
