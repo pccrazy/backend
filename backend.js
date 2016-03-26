@@ -71,7 +71,7 @@ var tools=require("./Tools")
   method: "POST",
   timeout: 10000,
   followRedirect: true,
-  form: {job:req.body.job,dstatus:req.body.deviceStatus}
+  form: {job:req.body.job,dstatus:req.body.deviceStatus,comment:req.body.comment}
    }, function(error, response, body) {
      if(!error&& response.statusCode == 200){
        if(body=="ack"){
@@ -204,6 +204,10 @@ app.post("/setremote",function(req,res) {
      });
      //
 
+  });
+  app.post("/pushstatus",function(req,res){
+      tools.pushDeviceStatus(req.body.user,req.body.msg);
+     //
   });
   app.post("/alert",function(req,res){
      var alert="SELECT * FROM SmartHouse.Users where idUsers="+req.body.user;

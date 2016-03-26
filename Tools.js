@@ -57,6 +57,20 @@ exports.pushNotification=function(id){
   });
 
 }
+exports.pushDeviceStatus=function(id,dn){
+  var message = {
+      registration_id: id, // required
+      'data.title': dn,
+  };
+  gcm.send(message, function(err, messageId){
+      if (err) {
+          console.log("Something has gone wrong! "+err);
+      } else {
+          console.log("Sent with message ID : ", messageId);
+      }
+  });
+
+}
 exports.sendSms = function(number) {
   var client = require('twilio')('ACeb686f315944592c283ea4c9945c7180', '2e802e75e0c419ebbcf3f5f9226d9bfb');
 
