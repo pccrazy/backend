@@ -59,6 +59,7 @@ var tools=require("./Tools")
  };
 
  app.post("/createJob",function(req,respond){
+   //
   var checkJob="SELECT idSecdualer FROM SmartHouse.Secdualer where Job='"+req.body.job+"' and idUser="+req.body.user;
    var devicesmode="INSERT INTO `SmartHouse`.`Secdualer` (`idUser`, `Comment`,`Job`, `DeviceStatus`) VALUES ('"+req.body.user+"','"+req.body.comment+"' ,'"+req.body.job+"', '"+req.body.deviceStatus+"')";
    pool.query(checkJob,function(err,rows){
@@ -77,7 +78,7 @@ var tools=require("./Tools")
        if(body=="ack"){
          pool.query(devicesmode,function(err,res){
          if(err) {
-               respond.send("Somthing Went Wrong");
+               respond.send("Somthing Went Wrongg");
                 console.log("Error"+err);
                }else{
 
