@@ -127,9 +127,16 @@ var tools=require("./Tools")
   handle_database(req,respond,devicesmode);
  });
 
- app.post("/token",function(req,respond){
+ app.post("/token",function(req,res){
   var token="UPDATE `SmartHouse`.`Users` SET GCM='"+req.body.token+"' WHERE idUsers="+req.body.user;
-  handle_database(req,respond,token);
+  pool.query(token, function(err, results) {
+    if (err) {
+      console.log("somthing went wrong in token "+err)};
+    // `results` is an array with one element for every statement in the query:
+    res.send("ack token");
+    console.log(results); // [{1: 1}]
+  // [{2: 2}]
+  });
  });
 
 
