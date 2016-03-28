@@ -129,14 +129,7 @@ var tools=require("./Tools")
 
  app.post("/token",function(req,respond){
   var token="UPDATE `SmartHouse`.`Users` SET GCM='"+req.body.token+"' WHERE idUsers="+req.body.user;
-  pool.query(token, function(err, results) {
-    if (err) {
-      console.log("somthing went wrong in token "+err)};
-    // `results` is an array with one element for every statement in the query:
-    respond.send("ack token");
-    console.log(results); // [{1: 1}]
-  // [{2: 2}]
-  });
+  handle_database(req,respond,token);
  });
 
 
