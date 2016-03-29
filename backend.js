@@ -253,6 +253,31 @@ app.post("/setremote",function(req,res) {
      });
      //
   });
+
+
+  app.post("/syncDeviceMode",function(req,ress){
+
+      var query="UPDATE SmartHouse.Devices SET Device_Mode="+req.body.DM+" WHERE idUsers="+req.body.user+" and Device_Name='"+req.body.DN+"'";
+      pool.query(query,function(err,res){
+      if(err) {
+               ress.json([{"status":"Something Went Wrong"}]);
+             console.log("Error"+err);
+            }else{
+
+                 if(res.changedRows==1&&res.affectedRows==1)
+                 {
+                   ress.json([{"status":"Device Status Changed"}]);
+                 }else if (res.changedRows==0&&res.affectedRows==0){
+                   ress.json([{"status":"Device Is Not Connected"}]);
+                 }else if (res.changedRows==0&&res.affectedRows==1){
+                   ress.json([{"status":"Device Status Is Not Changed"}]);
+                 }
+
+             }
+      });
+
+
+ });
   app.post("/changeDeviceMode",function(req,ress){
 
       var query="UPDATE SmartHouse.Devices SET Device_Mode="+req.body.DM+" WHERE idUsers="+req.body.user+" and Device_Name='"+req.body.DN+"'";
