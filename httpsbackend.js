@@ -323,9 +323,7 @@ app.post("/setremote",function(req,res) {
 
 
 // app.listen(3000);
-server = https.createServer(options, app).listen(port, function () {
-  // port = server.address().port;
-  console.log('Listening on https://' + server.address().address + ':' + port);
-  // console.log('Listening on https://local.ldsconnect.org:' + port);
-
-});
+https.createServer({
+  key: fs.readFileSync(path.join(__dirname, 'server', 'my-server.key.pem')),
+  cert: fs.readFileSync(path.join(__dirname, 'server', 'my-server.crt.pem'))
+}, app).listen(3000);
