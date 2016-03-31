@@ -328,7 +328,8 @@ app.post("/setremote",function(req,res) {
       });
 
 
-          tools.sendtoRas(req.body.DN,req.body.DM,getip(req.body.user))
+          console.log("from change device mode "+getip(req.body.user));
+          tools.sendtoRas(req.body.DN,req.body.DM,getip(req.body.user));
 
 
  });

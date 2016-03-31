@@ -8,7 +8,7 @@ var request = require('request');
 
   exports.sendtoRas=function(pinn,modee,ip){
 
-    request.post({url:'http://'+ip+'/gpio', form: {DN:pinn,DM:modee}},
+    request.post({url:'http://'+ip+':4000/gpio', form: {DN:pinn,DM:modee}},
     function(err,httpResponse,body)
       {
             return httpResponse;
