@@ -75,6 +75,16 @@ options = { key: fs.readFileSync(path.join(__dirname, 'server', 'my-server.key.p
    });
  };
 
+function getip(){
+  var checkJob="SELECT vpnip as ip FROM SmartHouse.Users where idUsers="+req.body.user;
+  pool.query(auth, function(err, results) {
+    if (err) {console.log("somthing went wrong")};
+    // `results` is an array with one element for every statement in the query:
+    console.log(results[0].ip); // [{1: 1}]
+    return results[0].ip;
+  // [{2: 2}]
+  });
+}
  app.post("/createJob",function(req,respond){
    //
   var checkJob="SELECT idSecdualer FROM SmartHouse.Secdualer where Job='"+req.body.job+"' and idUser="+req.body.user;
@@ -297,6 +307,7 @@ app.post("/setremote",function(req,res) {
  });
   app.post("/changeDeviceMode",function(req,ress){
 
+
       var query="UPDATE SmartHouse.Devices SET Device_Mode="+req.body.DM+" WHERE idUsers="+req.body.user+" and Device_Name='"+req.body.DN+"'";
       pool.query(query,function(err,res){
       if(err) {
@@ -316,7 +327,8 @@ app.post("/setremote",function(req,res) {
              }
       });
 
-          tools.sendtoRas(req.body.DN,req.body.DM)
+     
+          tools.sendtoRas(req.body.DN,req.body.DM,getip())
 
 
  });

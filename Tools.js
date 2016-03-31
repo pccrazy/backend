@@ -6,9 +6,9 @@ var gcm = new GCM(apiKey);
 var request = require('request');
 
 
-  exports.sendtoRas=function(pinn,modee){
+  exports.sendtoRas=function(pinn,modee,ip){
 
-    request.post({url:'http://10.8.0.6:4000/gpio', form: {DN:pinn,DM:modee}},
+    request.post({url:'http://'+ip+'/gpio', form: {DN:pinn,DM:modee}},
     function(err,httpResponse,body)
       {
             return httpResponse;
