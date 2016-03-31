@@ -76,8 +76,8 @@ options = { key: fs.readFileSync(path.join(__dirname, 'server', 'my-server.key.p
  };
 
 function getip(){
-  var checkJob="SELECT vpnip as ip FROM SmartHouse.Users where idUsers="+req.body.user;
-  pool.query(auth, function(err, results) {
+  var ip="SELECT vpnip as ip FROM SmartHouse.Users where idUsers="+req.body.user;
+  pool.query(ip, function(err, results) {
     if (err) {console.log("somthing went wrong")};
     // `results` is an array with one element for every statement in the query:
     console.log(results[0].ip); // [{1: 1}]
@@ -327,7 +327,7 @@ app.post("/setremote",function(req,res) {
              }
       });
 
-     
+
           tools.sendtoRas(req.body.DN,req.body.DM,getip())
 
 
