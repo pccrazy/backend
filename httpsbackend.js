@@ -88,9 +88,7 @@ options = { key: fs.readFileSync(path.join(__dirname, 'server', 'my-server.key.p
                  var ip="SELECT vpnip as ip FROM SmartHouse.Users where idUsers="+user;
                  pool.query(ip, function(err, results) {
                    if (err) {console.log("somthing went wrong")};
-                   console.log(results[0].ip); // [{1: 1}]
-                 tools.sendtoRas(req.body.DN,req.body.DM,);
-
+                
 
            request({
   uri: "http://"+results[0].ip+":4000/job",
