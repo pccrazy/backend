@@ -75,16 +75,7 @@ options = { key: fs.readFileSync(path.join(__dirname, 'server', 'my-server.key.p
    });
  };
 
-function getip(user){
-  var ip="SELECT vpnip as ip FROM SmartHouse.Users where idUsers="+user;
-  pool.query(ip, function(err, results) {
-    if (err) {console.log("somthing went wrong")};
-    // `results` is an array with one element for every statement in the query:
-    console.log(results[0].ip); // [{1: 1}]
-    return results[0].ip;
-  // [{2: 2}]
-  });
-}
+
  app.post("/createJob",function(req,respond){
    //
   var checkJob="SELECT idSecdualer FROM SmartHouse.Secdualer where Job='"+req.body.job+"' and idUser="+req.body.user;
@@ -94,13 +85,20 @@ function getip(user){
          console.log(rows.length);
          if(rows.length==0){
 
+                 var ip="SELECT vpnip as ip FROM SmartHouse.Users where idUsers="+user;
+                 pool.query(ip, function(err, results) {
+                   if (err) {console.log("somthing went wrong")};
+                   console.log(results[0].ip); // [{1: 1}]
+                 tools.sendtoRas(req.body.DN,req.body.DM,);
+
+
            request({
-  uri: "http://10.8.0.6:4000/job",
+  uri: "http://"+results[0].ip+":4000/job",
   method: "POST",
   timeout: 10000,
   followRedirect: true,
-  form: {job:req.body.job,dstatus:req.body.deviceStatus,comment:req.body.comment}
-   }, function(error, response, body) {
+  form: {job:req.body.job,dstatus:req.body.deviceStatus,comment:req.body.comment}}, function(error, response, body)
+  {
      if(!error&& response.statusCode == 200){
        if(body=="ack"){
          pool.query(devicesmode,function(err,res){
@@ -117,10 +115,10 @@ function getip(user){
 
    }else{
         console.log("Somthing Wrong With The Connection");
-      respond.send("Somthing Wrong With The Connection");
+        respond.send("Somthing Wrong With The Connection");
    }
   });
-
+ });
          }else{
                respond.send("You already have a job at that Time and Date");
          }
@@ -328,8 +326,15 @@ app.post("/setremote",function(req,res) {
       });
 
 
-          console.log("from change device mode "+getip(req.body.user));
-          tools.sendtoRas(req.body.DN,req.body.DM,getip(req.body.user));
+      var ip="SELECT vpnip as ip FROM SmartHouse.Users where idUsers="+user;
+      pool.query(ip, function(err, results) {
+        if (err) {console.log("somthing went wrong")};
+        console.log(results[0].ip); // [{1: 1}]
+      tools.sendtoRas(req.body.DN,req.body.DM,results[0].ip);
+
+      });
+
+
 
 
  });
