@@ -78,6 +78,8 @@ options = { key: fs.readFileSync(path.join(__dirname, 'server', 'my-server.key.p
 
  app.post("/createJob",function(req,respond){
    //
+   console.log("user id "+req.body.user);
+
   var checkJob="SELECT idSecdualer FROM SmartHouse.Secdualer where Job='"+req.body.job+"' and idUser="+req.body.user;
    var devicesmode="INSERT INTO `SmartHouse`.`Secdualer` (`idUser`, `Comment`,`Job`, `DeviceStatus`) VALUES ('"+req.body.user+"','"+req.body.comment+"' ,'"+req.body.job+"', '"+req.body.deviceStatus+"')";
    pool.query(checkJob,function(err,rows){
@@ -121,7 +123,7 @@ options = { key: fs.readFileSync(path.join(__dirname, 'server', 'my-server.key.p
                respond.send("You already have a job at that Time and Date");
          }
        }else{
-         res.json({"code" : 102, "status" : "Error in user"});
+         respond.json({"code" : 102, "status" : "Error in user"});
        }
    });
 
